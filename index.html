@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>スタンプショップ テスト画面</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      background: linear-gradient(135deg, #e8f3ff 0%, #fff1f8 45%, #f5fff1 100%);
+      color: #1f2937;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 28px 16px;
+    }
+
+    .phone {
+      width: 390px;
+      max-width: 100%;
+      background: #f9fafb;
+      border-radius: 34px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+      overflow: hidden;
+      border: 8px solid #111827;
+      position: relative;
+    }
+
+    .status-bar {
+      height: 26px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 18px;
+      letter-spacing: 0.03em;
+    }
+
+    .app-header {
+      background: linear-gradient(135deg, #ff7ab6 0%, #7c3aed 48%, #2563eb 100%);
+      color: #ffffff;
+      padding: 18px 18px 22px;
+      position: relative;
+    }
+
+    .top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .app-title { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(6px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+    }
+
+    .icons { display: flex; gap: 8px; }
+
+    .icon-button {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
+      cursor: pointer;
+      user-select: none;
+      color: #ffffff;
+      font-size: 15px;
+    }
+
+    .balance-card {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 22px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .balance-label { font-size: 13px; opacity: 0.9; margin-bottom: 4px; }
+    .balance { font-size: 30px; font-weight: 900; line-height: 1; }
+
+    .charge-button {
+      background: #ffffff;
+      color: #7c3aed;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.14);
+    }
+
+    .content { padding: 16px; }
+
+    .campaign {
+      background: linear-gradient(135deg, #fff7ad 0%, #ffd6e8 100%);
+      border-radius: 22px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 12px 28px rgba(236, 72, 153, 0.16);
+      margin-bottom: 16px;
+      border: 1px solid rgba(249, 168, 212, 0.55);
+      cursor: pointer;
+    }
+
+    .campaign h2 { margin: 0 0 4px; font-size: 16px; }
+    .campaign p { margin: 0; font-size: 12px; color: #6b21a8; line-height: 1.45; }
+
+    .campaign-badge {
+      min-width: 70px;
+      height: 70px;
+      border-radius: 22px;
+      background: #ffffff;
+      display: grid;
+      place-items: center;
+      font-size: 34px;
+      box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.15);
+    }
+
+    .section-title { display: flex; justify-content: space-between; align-items: baseline; margin: 12px 2px 10px; }
+    .section-title h2 { margin: 0; font-size: 18px; }
+    .section-title span { font-size: 12px; color: #6b7280; }
+
+    .stamp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .stamp-card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 12px;
+      border: 2px solid transparent;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+      transition: 0.18s ease;
+      cursor: pointer;
+      position: relative;
+      min-height: 190px;
+    }
+
+    .stamp-card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12); }
+    .stamp-card.selected { border-color: #8b5cf6; box-shadow: 0 16px 34px rgba(124, 58, 237, 0.18); }
+
+    .tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-weight: 800;
+      color: #ffffff;
+      background: #ef4444;
+    }
+    .tag.blue { background: #2563eb; }
+    .tag.green { background: #10b981; }
+
+    .stamp-image {
+      height: 80px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 44px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #fdf2f8, #eff6ff);
+    }
+
+    .stamp-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+    .stamp-desc { font-size: 11px; color: #6b7280; min-height: 30px; line-height: 1.35; margin-bottom: 8px; }
+    .stamp-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .price { font-size: 17px; font-weight: 900; color: #7c3aed; }
+
+    .owned {
+      color: #059669;
+      background: #d1fae5;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 8px;
+    }
+
+    .select-mini {
+      border: none;
+      background: #ede9fe;
+      color: #6d28d9;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .purchase-panel {
+      margin-top: 16px;
+      background: #111827;
+      color: #ffffff;
+      border-radius: 24px;
+      padding: 15px;
+      box-shadow: 0 18px 34px rgba(17, 24, 39, 0.22);
+    }
+
+    .purchase-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .selected-name { font-weight: 900; font-size: 15px; }
+    .selected-detail { font-size: 12px; color: #cbd5e1; margin-top: 3px; }
+    .purchase-price { font-size: 20px; font-weight: 900; white-space: nowrap; }
+
+    .buy-button {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 13px 14px;
+      font-size: 16px;
+      font-weight: 900;
+      color: #111827;
+      background: linear-gradient(135deg, #facc15, #fb7185);
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+    .buy-button:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.02); }
+    .buy-button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .message {
+      margin-top: 10px;
+      min-height: 24px;
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 9px 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      color: #e5e7eb;
+    }
+    .message.success { background: rgba(16, 185, 129, 0.18); color: #bbf7d0; }
+    .message.error { background: rgba(248, 113, 113, 0.18); color: #fecaca; }
+    .message.info { background: rgba(96, 165, 250, 0.18); color: #bfdbfe; }
+
+    .history {
+      margin-top: 16px;
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 12px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.07);
+    }
+
+    .history-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 900; font-size: 14px; }
+    .history-title span { font-weight: 700; color: #6b7280; font-size: 11px; }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      max-height: 165px;
+      overflow-y: auto;
+      padding-right: 3px;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9fafb;
+      border-radius: 14px;
+      padding: 9px 10px;
+      font-size: 12px;
+    }
+    .history-item strong { display: block; font-size: 12px; }
+    .history-item small { color: #6b7280; }
+    .history-point { font-weight: 900; white-space: nowrap; }
+    .history-point.use { color: #dc2626; }
+    .history-point.add { color: #059669; }
+
+    .utility-row { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+    .reset-button { border: none; background: #e5e7eb; color: #374151; border-radius: 999px; padding: 8px 12px; font-weight: 800; font-size: 12px; cursor: pointer; }
+    .memo { margin-top: 10px; color: #6b7280; font-size: 11px; line-height: 1.5; text-align: center; }
+
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.52);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      z-index: 20;
+    }
+    .modal-backdrop.active { display: flex; }
+
+    #chargeModal {
+      align-items: flex-start;
+      padding-top: 118px;
+    }
+
+    .modal {
+      width: 100%;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 26px 50px rgba(0,0,0,0.28);
+    }
+    .modal h3 { margin: 0 0 8px; font-size: 18px; }
+    .modal p { margin: 0 0 14px; color: #4b5563; font-size: 13px; line-height: 1.55; }
+    .modal-summary { background: #f3f4f6; border-radius: 16px; padding: 12px; margin-bottom: 14px; font-size: 13px; line-height: 1.7; }
+    .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .modal-button { border: none; border-radius: 15px; padding: 12px; font-weight: 900; cursor: pointer; }
+    .cancel { background: #e5e7eb; color: #374151; }
+    .confirm { background: linear-gradient(135deg, #8b5cf6, #2563eb); color: #ffffff; }
+
+    .charge-options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 10px 0 12px; }
+    .charge-option {
+      border: 2px solid #e5e7eb;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 10px 6px;
+      font-weight: 900;
+      color: #4b5563;
+      cursor: pointer;
+    }
+    .charge-option.active { border-color: #8b5cf6; background: #ede9fe; color: #6d28d9; }
+
+    .charge-input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .step-button {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 13px;
+      background: #e5e7eb;
+      color: #374151;
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .charge-input {
+      width: 100%;
+      height: 42px;
+      border: 2px solid #e5e7eb;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 900;
+      text-align: center;
+      color: #111827;
+    }
+    .charge-note {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      border-radius: 14px;
+      padding: 9px 10px;
+      font-size: 11px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .validation-message { min-height: 20px; color: #dc2626; font-size: 12px; font-weight: 800; margin-bottom: 10px; }
+
+    @media (max-width: 430px) {
+      body { padding: 0; background: #f9fafb; }
+      .phone { border-radius: 0; border: none; width: 100%; min-height: 100vh; }
+      #chargeModal { padding-top: 96px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="スタンプショップアプリ">
+    <div class="status-bar"><span>10:30</span><span>●●●  5G  🔋</span></div>
+
+    <header class="app-header">
+      <div class="top-row">
+        <div class="app-title">
+          <div class="logo">💬</div>
+          <div><div>Stamp Market</div><div style="font-size: 11px; font-weight: 600; opacity: .86;">スタンプ購入</div></div>
+        </div>
+        <div class="icons">
+          <button class="icon-button" type="button" id="searchButton">🔍</button>
+          <button class="icon-button" type="button" id="noticeButton">🔔</button>
+        </div>
+      </div>
+
+      <div class="balance-card">
+        <div>
+          <div class="balance-label">所持ポイント</div>
+          <div class="balance"><span id="balance">930</span><span style="font-size: 15px; margin-left: 4px;">pt</span></div>
+        </div>
+        <button class="charge-button" type="button" id="chargeButton">＋ チャージ</button>
+      </div>
+    </header>
+
+    <section class="content">
+      <section class="campaign" aria-label="キャンペーン" id="campaignArea">
+        <div><h2>週末限定キャンペーン</h2><p>人気スタンプを購入すると、次回使える10ptクーポンをプレゼント。</p></div>
+        <div class="campaign-badge">🎁</div>
+      </section>
+
+      <div class="section-title"><h2>おすすめスタンプ</h2><span>タップして選択</span></div>
+      <section class="stamp-grid" id="stampGrid"></section>
+
+      <section class="purchase-panel" aria-label="購入確認">
+        <div class="purchase-row">
+          <div><div class="selected-name" id="selectedName">スタンプを選択してください</div><div class="selected-detail" id="selectedDetail">購入前にポイント残高を確認しましょう</div></div>
+          <div class="purchase-price" id="selectedPrice">-- pt</div>
+        </div>
+        <button class="buy-button" type="button" id="buyButton" disabled>購入する</button>
+        <div class="message" id="message">スタンプカードを選ぶと、ここに購入確認が表示されます。</div>
+      </section>
+
+      <section class="history" aria-label="購入履歴">
+        <div class="history-title"><div>購入履歴</div><span>スクロールで全件表示</span></div>
+        <div class="history-list" id="historyList"></div>
+      </section>
+
+      <div class="utility-row"><button class="reset-button" type="button" id="resetButton">体験用：初期状態に戻す</button></div>
+      <p class="memo">※これはオープンキャンパス体験用のサンプル画面です。実在のアプリ・サービスとは関係ありません。</p>
+    </section>
+
+    <div class="modal-backdrop" id="purchaseModal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="purchaseModalTitle">
+        <h3 id="purchaseModalTitle">購入内容の確認</h3>
+        <p>以下の内容でスタンプを購入します。よろしいですか？</p>
+        <div class="modal-summary" id="modalSummary"></div>
+        <div class="modal-actions"><button class="modal-button cancel" type="button" id="cancelButton">キャンセル</button><button class="modal-button confirm" type="button" id="confirmButton">購入を確定</button></div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="chargeModal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="chargeModalTitle">
+        <h3 id="chargeModalTitle">ポイントをチャージ</h3>
+        <p>追加するポイントを選んでください。</p>
+        <div class="charge-note">※体験用アプリのため、この画面ではポイントを自由に追加できます。実際のアプリでは、1pt＝1円などの支払い処理が必要です。<br>※1回のチャージ上限は5,000ptです。</div>
+        <div class="charge-options">
+          <button class="charge-option" type="button" data-point="100">100pt</button>
+          <button class="charge-option active" type="button" data-point="300">300pt</button>
+          <button class="charge-option" type="button" data-point="500">500pt</button>
+        </div>
+        <div class="charge-input-row">
+          <button class="step-button" type="button" id="minusCharge">−</button>
+          <input class="charge-input" id="chargeInput" type="text" value="300" inputmode="decimal" aria-label="チャージポイント" />
+          <button class="step-button" type="button" id="plusCharge">＋</button>
+        </div>
+        <div class="validation-message" id="chargeValidation"></div>
+        <div class="modal-actions"><button class="modal-button cancel" type="button" id="chargeCancelButton">キャンセル</button><button class="modal-button confirm" type="button" id="chargeConfirmButton">チャージする</button></div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="infoModal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+        <h3 id="infoModalTitle">お知らせ</h3>
+        <p id="infoModalText">表示確認用です。</p>
+        <div class="modal-actions" style="grid-template-columns: 1fr;"><button class="modal-button confirm" type="button" id="infoOkButton">OK</button></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const initialStamps = [
+      { id: "cat", emoji: "🐱", name: "毎日ねこセット", desc: "あいさつ・返事に使いやすい定番セット", price: 120, tag: "人気", tagColor: "blue", owned: false },
+      { id: "panda", emoji: "🐼", name: "ゆるパンダ敬語", desc: "先輩や先生にも送りやすい敬語スタンプ", price: 150, tag: "おすすめ", tagColor: "green", owned: false },
+      { id: "rabbit", emoji: "🐰", name: "放課後うさぎ", desc: "友だちとの予定調整に便利なセット", price: 100, tag: "新着", tagColor: "", owned: false },
+      { id: "bird", emoji: "🐤", name: "ぴよっと応援団", desc: "部活・試験・発表前に使える応援系", price: 180, tag: "限定", tagColor: "", owned: false },
+      { id: "fox", emoji: "🦊", name: "きつねリアクション", desc: "驚き・笑い・ツッコミ多めの反応セット", price: 90, tag: "お得", tagColor: "green", owned: true },
+      { id: "seal", emoji: "🦭", name: "まったりアザラシ", desc: "ゆるく返せる癒やし系スタンプ", price: 200, tag: "人気", tagColor: "blue", owned: false }
+    ];
+
+    const initialHistory = [
+      { name: "きつねリアクション", kind: "use", point: 90, time: "今日 09:12" },
+      { name: "ログインボーナス", kind: "add", point: 20, time: "昨日 08:00" },
+      { name: "初回チャージ", kind: "add", point: 1000, time: "一昨日 18:40" }
+    ];
+
+    let stamps;
+    let balance;
+    let selectedStamp = null;
+    let history;
+    let completedPurchaseCount = 1;
+    let chargeCloseTimer = null;
+
+    const balanceEl = document.getElementById("balance");
+    const stampGrid = document.getElementById("stampGrid");
+    const selectedName = document.getElementById("selectedName");
+    const selectedDetail = document.getElementById("selectedDetail");
+    const selectedPrice = document.getElementById("selectedPrice");
+    const buyButton = document.getElementById("buyButton");
+    const message = document.getElementById("message");
+    const historyList = document.getElementById("historyList");
+    const purchaseModal = document.getElementById("purchaseModal");
+    const modalSummary = document.getElementById("modalSummary");
+    const chargeModal = document.getElementById("chargeModal");
+    const chargeInput = document.getElementById("chargeInput");
+    const chargeValidation = document.getElementById("chargeValidation");
+    const infoModal = document.getElementById("infoModal");
+    const infoModalText = document.getElementById("infoModalText");
+
+    function calculateBalance(items) {
+      return items.reduce((sum, item) => item.kind === "add" ? sum + item.point : sum - item.point, 0);
+    }
+
+    function clone(value) { return JSON.parse(JSON.stringify(value)); }
+
+    function resetApp() {
+      stamps = clone(initialStamps);
+      history = clone(initialHistory);
+      balance = calculateBalance(history);
+      completedPurchaseCount = 1;
+      selectedStamp = null;
+      selectedName.textContent = "スタンプを選択してください";
+      selectedDetail.textContent = "購入前にポイント残高を確認しましょう";
+      selectedPrice.textContent = "-- pt";
+      buyButton.disabled = true;
+      buyButton.textContent = "購入する";
+      setMessage("初期状態に戻しました。スタンプカードを選んでください。", "info");
+      hidePurchaseModalOnly();
+      closeChargeModal();
+      closeInfoModal();
+      renderAll();
+    }
+
+    function renderAll() { renderStamps(); renderHistory(); updateBalance(); }
+
+    function renderStamps() {
+      stampGrid.innerHTML = "";
+      stamps.forEach(stamp => {
+        const card = document.createElement("article");
+        card.className = "stamp-card" + (selectedStamp && selectedStamp.id === stamp.id ? " selected" : "");
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", stamp.name + "を選択");
+        card.innerHTML = `
+          <div class="tag ${stamp.tagColor}">${stamp.tag}</div>
+          <div class="stamp-image">${stamp.emoji}</div>
+          <div class="stamp-name">${stamp.name}</div>
+          <div class="stamp-desc">${stamp.desc}</div>
+          <div class="stamp-footer">
+            <div class="price">${stamp.price}pt</div>
+            ${stamp.owned ? '<div class="owned">購入済み</div>' : '<button class="select-mini" type="button">選択</button>'}
+          </div>
+        `;
+        card.addEventListener("click", () => selectStamp(stamp.id));
+        card.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            selectStamp(stamp.id);
+          }
+        });
+        stampGrid.appendChild(card);
+      });
+    }
+
+    function renderHistory() {
+      historyList.innerHTML = "";
+      history.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "history-item";
+        const isUse = item.kind === "use";
+        row.innerHTML = `
+          <div><strong>${item.name}</strong><small>${item.time}</small></div>
+          <div class="history-point ${isUse ? 'use' : 'add'}">${isUse ? '-' : '+'}${item.point}pt</div>
+        `;
+        historyList.appendChild(row);
+      });
+    }
+
+    function updateBalance() { balanceEl.textContent = balance; }
+
+    function setMessage(text, type = "normal") {
+      message.textContent = text;
+      message.className = "message";
+      if (type === "success") message.classList.add("success");
+      if (type === "error") message.classList.add("error");
+      if (type === "info") message.classList.add("info");
+    }
+
+    function selectStamp(id) {
+      selectedStamp = stamps.find(stamp => stamp.id === id);
+      selectedName.textContent = selectedStamp.name;
+      selectedDetail.textContent = selectedStamp.owned ? "このスタンプはすでに購入済みです" : `所持ポイント ${balance}pt / 必要ポイント ${selectedStamp.price}pt`;
+      selectedPrice.textContent = `${selectedStamp.price} pt`;
+      // BUG 1: 購入済みスタンプでも購入ボタンが押せてしまう
+      buyButton.disabled = false;
+      buyButton.textContent = selectedStamp.owned ? "もう一度購入する" : "購入する";
+      setMessage(selectedStamp.owned ? "このスタンプはすでに購入済みです。" : "内容を確認して、問題なければ購入してください。");
+      renderStamps();
+    }
+
+    function openPurchaseModal() {
+      if (!selectedStamp) { setMessage("先に購入するスタンプを選択してください。", "error"); return; }
+      if (balance < selectedStamp.price) { setMessage("ポイントが不足しています。チャージしてから購入してください。", "error"); return; }
+      modalSummary.innerHTML = `商品：<strong>${selectedStamp.name}</strong><br>必要ポイント：<strong>${selectedStamp.price}pt</strong><br>購入後の残高：<strong>${balance - selectedStamp.price}pt</strong>`;
+      purchaseModal.classList.add("active");
+      purchaseModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closePurchaseModal() {
+      // BUG 2: キャンセルしただけなのに購入処理が実行されてしまう
+      if (selectedStamp && purchaseModal.classList.contains("active")) {
+        runPurchase("キャンセルしました。", true);
+      }
+      hidePurchaseModalOnly();
+    }
+
+    function hidePurchaseModalOnly() {
+      purchaseModal.classList.remove("active");
+      purchaseModal.setAttribute("aria-hidden", "true");
+    }
+
+    function confirmPurchase() {
+      if (!selectedStamp) return;
+      hidePurchaseModalOnly();
+      runPurchase(`${selectedStamp.name}を購入しました。`, false);
+    }
+
+    function runPurchase(messageText, fromCancel) {
+      const actualPrice = selectedStamp.price;
+      balance -= actualPrice;
+      selectedStamp.owned = true;
+      completedPurchaseCount++;
+
+      // BUG 4: 履歴の消費ptが実際の消費ptより10pt多く表示される
+      history.unshift({ name: selectedStamp.name, kind: "use", point: actualPrice + 10, time: "いま" });
+
+      // BUG 7: 累計3回目の購入時、別の未購入スタンプも勝手に購入済みになる
+      if (completedPurchaseCount === 3) {
+        const extraStamp = stamps.find(stamp => !stamp.owned && stamp.id !== selectedStamp.id);
+        if (extraStamp) extraStamp.owned = true;
+      }
+
+      selectedDetail.textContent = "購入が完了しました";
+      buyButton.disabled = true;
+      buyButton.textContent = "購入済み";
+      renderAll();
+      setMessage(fromCancel ? messageText : `${selectedStamp.name}を購入しました。残高は${balance}ptです。`, fromCancel ? "error" : "success");
+    }
+
+    function openChargeModal() {
+      chargeInput.value = "300";
+      chargeValidation.textContent = "";
+      setActiveChargeOption("300");
+      chargeModal.classList.add("active");
+      chargeModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeChargeModal() {
+      if (chargeCloseTimer) clearTimeout(chargeCloseTimer);
+      chargeCloseTimer = null;
+      chargeModal.classList.remove("active");
+      chargeModal.setAttribute("aria-hidden", "true");
+    }
+
+    function setActiveChargeOption(value) {
+      document.querySelectorAll(".charge-option").forEach(button => {
+        button.classList.toggle("active", button.dataset.point === String(value));
+      });
+    }
+
+    function validateChargeValue(rawValue) {
+      const trimmed = String(rawValue).trim();
+      if (trimmed === "") return { ok: false, message: "チャージするポイントを入力してください。" };
+      // BUG 3: マイナスptを入力できてしまう
+      // BUG 8: 小数点ptも入力できてしまう
+      // BUG 5: 5,000ptの上限を超えてもチャージできてしまう
+      if (!/^-?\d+(\.\d+)?$/.test(trimmed)) return { ok: false, message: "数値で入力してください。" };
+      const point = Number(trimmed);
+      if (point === 0) return { ok: false, message: "0ptはチャージできません。" };
+      return { ok: true, point };
+    }
+
+    function updateChargeInput(value) {
+      const normalized = Number(value) || 0;
+      chargeInput.value = normalized;
+      setActiveChargeOption(normalized);
+      chargeValidation.textContent = "";
+    }
+
+    function confirmCharge() {
+      const result = validateChargeValue(chargeInput.value);
+      if (!result.ok) {
+        chargeValidation.textContent = result.message;
+        return;
+      }
+      // BUG 6: 確定ボタンを連打すると、その回数分チャージされてしまう
+      balance += result.point;
+      history.unshift({ name: "ポイントチャージ", kind: "add", point: result.point, time: "いま" });
+      renderAll();
+      if (selectedStamp && !selectedStamp.owned) {
+        selectedDetail.textContent = `所持ポイント ${balance}pt / 必要ポイント ${selectedStamp.price}pt`;
+      }
+      setMessage(`${result.point}ptをチャージしました。現在の残高は${balance}ptです。`, "success");
+      chargeCloseTimer = setTimeout(() => closeChargeModal(), 350);
+    }
+
+    function openInfoModal(title, text) {
+      document.getElementById("infoModalTitle").textContent = title;
+      infoModalText.textContent = text;
+      infoModal.classList.add("active");
+      infoModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeInfoModal() {
+      infoModal.classList.remove("active");
+      infoModal.setAttribute("aria-hidden", "true");
+    }
+
+    buyButton.addEventListener("click", openPurchaseModal);
+    document.getElementById("cancelButton").addEventListener("click", closePurchaseModal);
+    document.getElementById("confirmButton").addEventListener("click", confirmPurchase);
+    document.getElementById("resetButton").addEventListener("click", resetApp);
+
+    document.getElementById("searchButton").addEventListener("click", () => openInfoModal("検索機能", "検索機能は表示確認用です。今回の体験ではスタンプ購入・チャージ・履歴の動作を確認してください。"));
+    document.getElementById("noticeButton").addEventListener("click", () => openInfoModal("通知機能", "通知機能は表示確認用です。今回の体験ではスタンプ購入・チャージ・履歴の動作を確認してください。"));
+    document.getElementById("campaignArea").addEventListener("click", () => openInfoModal("キャンペーン詳細", "キャンペーン詳細は表示確認用です。今回の体験ではスタンプ購入・チャージ・履歴の動作を確認してください。"));
+    document.getElementById("infoOkButton").addEventListener("click", closeInfoModal);
+
+    document.getElementById("chargeButton").addEventListener("click", openChargeModal);
+    document.getElementById("chargeCancelButton").addEventListener("click", closeChargeModal);
+    document.getElementById("chargeConfirmButton").addEventListener("click", confirmCharge);
+    document.querySelectorAll(".charge-option").forEach(button => {
+      button.addEventListener("click", () => {
+        chargeInput.value = button.dataset.point;
+        setActiveChargeOption(button.dataset.point);
+        chargeValidation.textContent = "";
+      });
+    });
+    document.getElementById("minusCharge").addEventListener("click", () => updateChargeInput((Number(chargeInput.value) || 0) - 100));
+    document.getElementById("plusCharge").addEventListener("click", () => updateChargeInput((Number(chargeInput.value) || 0) + 100));
+    chargeInput.addEventListener("input", () => {
+      setActiveChargeOption(chargeInput.value);
+      chargeValidation.textContent = "";
+    });
+
+    resetApp();
+  </script>
+</body>
+</html>
