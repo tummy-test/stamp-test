@@ -20,7 +20,7 @@
     }
 
     .phone {
-      width: 390px;
+      width: 430px;
       max-width: 100%;
       background: #f9fafb;
       border-radius: 34px;
@@ -108,8 +108,8 @@
 
     .campaign {
       background: linear-gradient(135deg, #fff7ad 0%, #ffd6e8 100%);
-      border-radius: 22px;
-      padding: 14px;
+      border-radius: 18px;
+      padding: 9px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -124,13 +124,13 @@
     .campaign p { margin: 0; font-size: 12px; color: #6b21a8; line-height: 1.45; }
 
     .campaign-badge {
-      min-width: 70px;
-      height: 70px;
+      min-width: 56px;
+      height: 56px;
       border-radius: 22px;
       background: #ffffff;
       display: grid;
       place-items: center;
-      font-size: 34px;
+      font-size: 28px;
       box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.15);
     }
 
@@ -138,7 +138,7 @@
     .section-title h2 { margin: 0; font-size: 18px; }
     .section-title span { font-size: 12px; color: #6b7280; }
 
-    .stamp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stamp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 
     .stamp-card {
       background: #ffffff;
@@ -149,7 +149,7 @@
       transition: 0.18s ease;
       cursor: pointer;
       position: relative;
-      min-height: 190px;
+      min-height: 142px;
     }
 
     .stamp-card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12); }
@@ -159,8 +159,8 @@
       position: absolute;
       top: 10px;
       left: 10px;
-      font-size: 11px;
-      padding: 4px 8px;
+      font-size: 10px;
+      padding: 3px 6px;
       border-radius: 999px;
       font-weight: 800;
       color: #ffffff;
@@ -170,27 +170,46 @@
     .tag.green { background: #10b981; }
 
     .stamp-image {
-      height: 80px;
-      border-radius: 18px;
+      height: 58px;
+      border-radius: 16px;
       display: grid;
       place-items: center;
-      font-size: 44px;
-      margin-bottom: 10px;
+      font-size: 34px;
+      margin-bottom: 8px;
       background: linear-gradient(135deg, #fdf2f8, #eff6ff);
     }
 
-    .stamp-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
-    .stamp-desc { font-size: 11px; color: #6b7280; min-height: 30px; line-height: 1.35; margin-bottom: 8px; }
-    .stamp-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-    .price { font-size: 17px; font-weight: 900; color: #7c3aed; }
+    .stamp-name { font-size: 12px; font-weight: 800; margin-bottom: 5px; line-height: 1.25; min-height: 30px; }
+    .stamp-desc { display: none; }
+    .stamp-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: nowrap;
+    }
+    .price {
+      font-size: 16px;
+      font-weight: 900;
+      color: #7c3aed;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
 
     .owned {
       color: #059669;
       background: #d1fae5;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 800;
-      padding: 6px 8px;
+      padding: 5px 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      white-space: nowrap;
+      min-width: 48px;
+      flex-shrink: 0;
     }
 
     .select-mini {
@@ -198,14 +217,14 @@
       background: #ede9fe;
       color: #6d28d9;
       border-radius: 999px;
-      padding: 7px 10px;
+      padding: 6px 8px;
       font-weight: 800;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
     }
 
     .purchase-panel {
-      margin-top: 16px;
+      margin-top: 14px;
       background: #111827;
       color: #ffffff;
       border-radius: 24px;
@@ -215,7 +234,12 @@
 
     .purchase-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
     .selected-name { font-weight: 900; font-size: 15px; }
-    .selected-detail { font-size: 12px; color: #cbd5e1; margin-top: 3px; }
+    .selected-detail {
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-top: 5px;
+      line-height: 1.55;
+    }
     .purchase-price { font-size: 20px; font-weight: 900; white-space: nowrap; }
 
     .buy-button {
@@ -262,7 +286,7 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
-      max-height: 165px;
+      max-height: 145px;
       overflow-y: auto;
       padding-right: 3px;
     }
@@ -368,6 +392,12 @@
       body { padding: 0; background: #f9fafb; }
       .phone { border-radius: 0; border: none; width: 100%; min-height: 100vh; }
       #chargeModal { padding-top: 96px; }
+    }
+
+    @media (max-width: 380px) {
+      .stamp-grid { grid-template-columns: repeat(2, 1fr); }
+      .stamp-card { min-height: 138px; }
+      .stamp-image { height: 56px; font-size: 32px; }
     }
   </style>
 </head>
@@ -538,7 +568,6 @@
           <div class="tag ${stamp.tagColor}">${stamp.tag}</div>
           <div class="stamp-image">${stamp.emoji}</div>
           <div class="stamp-name">${stamp.name}</div>
-          <div class="stamp-desc">${stamp.desc}</div>
           <div class="stamp-footer">
             <div class="price">${stamp.price}pt</div>
             ${stamp.owned ? '<div class="owned">購入済み</div>' : '<button class="select-mini" type="button">選択</button>'}
@@ -581,13 +610,31 @@
 
     function selectStamp(id) {
       selectedStamp = stamps.find(stamp => stamp.id === id);
+
       selectedName.textContent = selectedStamp.name;
-      selectedDetail.textContent = selectedStamp.owned ? "このスタンプはすでに購入済みです" : `所持ポイント ${balance}pt / 必要ポイント ${selectedStamp.price}pt`;
+
+      if (selectedStamp.owned) {
+        selectedDetail.innerHTML = "このスタンプはすでに購入済みです";
+      } else {
+        selectedDetail.innerHTML = `
+          <span>${selectedStamp.desc}</span>
+          <br>
+          <span>所持ポイント ${balance}pt ／ 必要ポイント ${selectedStamp.price}pt</span>
+        `;
+      }
+
       selectedPrice.textContent = `${selectedStamp.price} pt`;
+
       // BUG 1: 購入済みスタンプでも購入ボタンが押せてしまう
       buyButton.disabled = false;
       buyButton.textContent = selectedStamp.owned ? "もう一度購入する" : "購入する";
-      setMessage(selectedStamp.owned ? "このスタンプはすでに購入済みです。" : "内容を確認して、問題なければ購入してください。");
+
+      setMessage(
+        selectedStamp.owned
+          ? "このスタンプはすでに購入済みです。"
+          : "内容を確認して、問題なければ購入してください。"
+      );
+
       renderStamps();
     }
 
@@ -691,7 +738,7 @@
       history.unshift({ name: "ポイントチャージ", kind: "add", point: result.point, time: "いま" });
       renderAll();
       if (selectedStamp && !selectedStamp.owned) {
-        selectedDetail.textContent = `所持ポイント ${balance}pt / 必要ポイント ${selectedStamp.price}pt`;
+        selectedDetail.textContent = `${selectedStamp.desc} / 所持ポイント ${balance}pt / 必要ポイント ${selectedStamp.price}pt`;
       }
       setMessage(`${result.point}ptをチャージしました。現在の残高は${balance}ptです。`, "success");
       chargeCloseTimer = setTimeout(() => closeChargeModal(), 350);
